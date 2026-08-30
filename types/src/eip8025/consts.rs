@@ -4,16 +4,13 @@
 //! consensus-specs. The EIP sets `MAX_PROOF_SIZE` to 400 KiB;
 //! consensus-specs sets it to 4 MiB and marks it "not definitive".
 //!
-//! `DOMAIN_EXECUTION_PROOF` is deliberately absent because signing is
-//! not implemented here. consensus-specs uses `0x0F000000`; the EIP
-//! uses `0x0D000000`, which is also assigned to Gloas
-//! `DOMAIN_PROPOSER_PREFERENCES`.
-//!
 //! [EIP-8025]: https://github.com/frisitano/consensus-specs/blob/7d6bd46a015a7dd316c5df855bd89e57c4aa6700/specs/_features/eip8025/beacon-chain.md
 
+use hex_literal::hex;
 use typenum::Unsigned as _;
 
 use crate::eip8025::primitives::MaxProofSize;
+use crate::phase0::primitives::{DomainType, H32};
 
 /// The maximum length of
 /// [`ProofData`](crate::eip8025::containers::ProofData) in bytes, 4
@@ -48,3 +45,6 @@ pub const STATELESS_INPUT_SCHEMA_ID: u16 = 0x1501;
 /// part of `ExecutionProofEnvelope` (an offset, a `ProofType` and a
 /// `Root`), plus a maximum-length `ProofData`.
 pub const MAX_SIGNED_EXECUTION_PROOF_ENVELOPE_SIZE: usize = 108 + 37 + MAX_PROOF_SIZE;
+
+/// The domain used for signing execution proofs.
+pub const DOMAIN_EXECUTION_PROOF: DomainType = H32(hex!("0F000000"));
